@@ -26,7 +26,7 @@ export default function Dashboard() {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             setNotes(response.data);
-        } catch (_) {
+        } catch {
             router.push('/login');
         }
     }, [router]);
