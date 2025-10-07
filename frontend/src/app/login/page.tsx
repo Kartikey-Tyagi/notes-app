@@ -20,11 +20,15 @@ export default function Login() {
         try {
             await login(email, password);
             router.push('/dashboard');
-        } catch (err) {
-            const errorMessage =
-                (err as any)?.response?.data?.detail || 'Invalid credentials';
-            setError(errorMessage);
+        } catch (err: unknown) {
+            if (typeof err === 'object' && err && 'response' in err) {
+                const axiosErr = err as { response?: { data?: { detail?: string } } };
+                setError(axiosErr.response?.data?.detail || 'Invalid credentials');
+            } else {
+                setError('Invalid credentials');
+            }
         }
+
 
     };
 

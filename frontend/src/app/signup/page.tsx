@@ -21,10 +21,13 @@ export default function Signup() {
         try {
             await signup(name, email, password, role);
             router.push('/login');
-        } catch (err) {
-            const errorMessage =
-                (err as any)?.response?.data?.detail || 'Signup failed';
-            setError(errorMessage);
+        } catch (err: unknown) {
+            if (typeof err === 'object' && err !== null && 'response' in err) {
+                const axiosErr = err as { response?: { data?: { detail?: string } } };
+                setError(axiosErr.response?.data?.detail || 'Signup failed');
+            } else {
+                setError('Signup failed');
+            }
         }
 
     };
