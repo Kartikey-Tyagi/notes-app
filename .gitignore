@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+venv/
+.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Build
+.next/
+dist/
+build/
+
+# Docker (if used later)
+*.dockerignore

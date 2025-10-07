@@ -1,0 +1,17 @@
+from sqlalchemy import Column, Integer, String, Enum
+from sqlalchemy.orm import relationship
+from ..database import Base
+import enum
+
+class Role(enum.Enum):
+    admin = "admin"
+    user = "user"
+
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    email = Column(String, unique=True, index=True, nullable=False)
+    password = Column(String, nullable=False)
+    role = Column(Enum(Role), default=Role.user, nullable=False)
+    notes = relationship("Note", back_populates="owner")
