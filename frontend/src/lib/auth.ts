@@ -7,13 +7,18 @@ export async function signup(name: string, email: string, password: string, role
 }
 
 export async function login(email: string, password: string) {
-  const formData = new FormData();
-  formData.append('username', email);
-  formData.append('password', password);
-  const response = await axios.post(`${API_URL}/auth/login`, formData);
+  const response = await axios.post(
+    `${API_URL}/auth/login`,
+    { email, password }, // send as JSON
+    {
+      headers: { 'Content-Type': 'application/json' }, // explicit JSON header
+    }
+  );
+
   localStorage.setItem('token', response.data.access_token);
   return response.data;
 }
+
 
 export function getToken() {
   return localStorage.getItem('token');
