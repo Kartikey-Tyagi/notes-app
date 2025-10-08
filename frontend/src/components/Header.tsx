@@ -14,13 +14,13 @@ export default function Header() {
 
   useEffect(() => {
     if (isMounted) {
-      const token = localStorage.getItem('access_token');
+      const token = localStorage.getItem('token');
       setIsLoggedIn(!!token);
     }
   }, [pathname, isMounted]);
 
   const handleSignout = () => {
-    localStorage.removeItem('access_token');
+    localStorage.removeItem('token');
     setIsLoggedIn(false);
     router.push('/login');
   };
