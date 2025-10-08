@@ -1,31 +1,31 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isMounted, setIsMounted] = useState(false); // ✅ ensures client-side only
 
   useEffect(() => {
-    const checkLoginStatus = () => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isMounted) {
       const token = localStorage.getItem('access_token');
       setIsLoggedIn(!!token);
-    };
-
-    checkLoginStatus();
-
-    window.addEventListener('storage', checkLoginStatus);
-
-    return () => {
-      window.removeEventListener('storage', checkLoginStatus);
-    };
-  }, []);
+    }
+  }, [pathname, isMounted]);
 
   const handleSignout = () => {
     localStorage.removeItem('access_token');
     setIsLoggedIn(false);
     router.push('/login');
   };
+
+  if (!isMounted) return null;
 
   return (
     <header className="bg-blue-600 text-white p-4 flex justify-between items-center">
@@ -35,6 +35,7 @@ export default function Header() {
       >
         Notes App
       </h1>
+
       {isLoggedIn && (
         <button
           onClick={handleSignout}
